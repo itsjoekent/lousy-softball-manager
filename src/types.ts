@@ -26,7 +26,6 @@ export type EditablePlayerFields = Omit<Player, 'id'>;
 
 export type DefensiveConfiguration = {
   positions: Partial<Record<PositionId, Player['id']>>;
-  bench: Player['id'][];
 };
 
 export type Game = {

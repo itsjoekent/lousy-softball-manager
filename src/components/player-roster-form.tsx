@@ -11,6 +11,7 @@ import {
 import { useForm } from '@mantine/form';
 import type { EditablePlayerFields } from '../types';
 import { positions, positionLabels, skillRange } from '../constants';
+import { positionRankEmoji } from '../utils/formatters';
 
 type FormFields = EditablePlayerFields & { __hiddenValidationField: string };
 
@@ -40,17 +41,6 @@ const defaultValues: EditablePlayerFields = {
     DH: 0,
   },
 };
-
-function getSliderLabel(value: number) {
-  switch (value) {
-    case 0: return '🛑';
-    case 1: return '⚠️';
-    case 2: return '👍';
-    case 3: return '👌';
-    case 4: return '⭐';
-    case 5: return '🌟';
-  }
-}
 
 export function PlayerRosterForm(props: Props) {
   const { initialValues, onCancel, onSubmit, submitLabel } = props;
@@ -113,7 +103,7 @@ export function PlayerRosterForm(props: Props) {
                 step={1}
                 min={skillRange[0]}
                 max={skillRange[1]}
-                label={getSliderLabel}
+                label={positionRankEmoji}
                 {...form.getInputProps(`positions.${positionId}`)}
               />
               {form.errors[`positions.${positionId}`] && (

@@ -43,28 +43,7 @@ export const minNonMalePlayersToCompete = 3;
 export const defensiveSimulationsToRun = 100;
 
 export const fieldingStrategies: PositionId[][] = [
-  [
-    'C',
-    'P',
-    '1B',
-    '2B',
-    'SS',
-    '3B',
-    'RF',
-    'LF',
-    'CF',
-    'SCF',
-  ],
-  [
-    'C',
-    'P',
-    '1B',
-    '2B',
-    'SS',
-    '3B',
-    'RF',
-    'CRF',
-    'LF',
-    'CLF',
-  ],
+  ['C', 'P', '1B', '2B', 'SS', '3B', 'RF', 'CF', 'LF'],
+  // ['C', 'P', '1B', '2B', 'SS', '3B', 'RF', 'LF', 'CF', 'SCF'],
+  ['C', 'P', '1B', '2B', 'SS', '3B', 'RF', 'CRF', 'LF', 'CLF'],
 ];

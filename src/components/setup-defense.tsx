@@ -1,6 +1,5 @@
-import { useEffect } from 'react';
-import { Loader, Stack, Text, Title } from '@mantine/core';
-import { useDefenseGenerator } from '../utils/use-defense-generator';
+import { Button, Stack, Title } from '@mantine/core';
+import { DefenseEditor } from './defense-editor';
 
 type Props = {
   onSubmit: () => void;
@@ -9,17 +8,13 @@ type Props = {
 export function SetupDefense(props: Props) {
   const { onSubmit } = props;
 
-  const { generate } = useDefenseGenerator();
-
-  useEffect(() => {
-    generate(0, onSubmit);
-  }, [generate, onSubmit]);
-
   return (
     <Stack>
       <Title order={2}>Setup Defense</Title>
-      <Text>Simulating optimal defensive configuration</Text>
-      <Loader />
+      <DefenseEditor />
+      <Button onClick={onSubmit}>
+        Next
+      </Button>
     </Stack>
   );
 }

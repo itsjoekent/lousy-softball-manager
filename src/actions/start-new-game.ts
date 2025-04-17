@@ -21,7 +21,6 @@ export function onStartNewGame(state: State, action: StartNewGameAction): State 
       lineups: Array.from({ length: action.innings }, () => []),
       defense: Array.from({ length: action.innings }, () => ({
         positions: {},
-        bench: [],
       })),
     },
   };

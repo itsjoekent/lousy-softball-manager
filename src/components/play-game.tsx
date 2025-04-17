@@ -1,15 +1,16 @@
 import { useEffect, useState } from 'react';
-import { Button, Paper, Select, Stack, Text, Title } from '@mantine/core';
+import { Paper, Select, Stack, Text, Title } from '@mantine/core';
 import { useStateContext } from '../state';
 import { PlayerList } from './player-list';
 import { baseInnings, positionLabels } from '../constants';
 import { PositionId } from '../types';
 import { inningFormat } from '../utils/formatters';
-import { useDefenseGenerator } from '../utils/use-defense-generator';
 import { getDefensiveChangelog } from '../utils/get-defensive-changelog';
+import { getBenchPlayers } from '../utils/state-selectors';
+import { DefenseEditor } from './defense-editor';
 
 const defenseOptions = new Array(baseInnings).fill('').map((_, index) => ({
-  label: inningFormat(index + 1),
+  label: `${inningFormat(index + 1)} inning`,
   value: `${index}`,
 }));
 
@@ -23,15 +24,8 @@ export function PlayGame() {
   const [defensiveRoles, setDefensiveRoles] = useState<string[]>([]);
 
   const defensiveInningInt = parseInt(defensiveInning || '0', 10);
-  const defensiveInningDisplay = defensiveInningInt + 1;
 
   useEffect(() => {
-    // TODO: account for NaN
-    if (defensiveInningInt < 0) {
-      setDefensiveRoles([]);
-      return;
-    }
-
     const defensiveLineup = state.game!.defense[defensiveInningInt];
     if (!defensiveLineup) {
       setDefensiveRoles([]);
@@ -47,21 +41,14 @@ export function PlayGame() {
         )?.name;
         return `${label}: ${playerName}`;
       }),
-      ...defensiveLineup.bench.map(
-        (playerId) =>
-          `Bench: ${
-            state.roster.find((player) => player.id === playerId)?.name
-          }`
-      ),
+      ...getBenchPlayers(state, defensiveInningInt).map((player) => `Bench: ${player.name}`),
     ];
 
     setDefensiveRoles(roles);
   }, [state, defensiveInningInt]);
 
-  const { generate, isGenerating } = useDefenseGenerator();
-
   return (
-    <Stack>
+    <Stack gap="md">
       <Title order={3}>Lineup</Title>
       <PlayerList
         playerIds={state.game.availablePlayerIds}
@@ -85,13 +72,9 @@ export function PlayGame() {
         {!!defensiveRoles.length &&
           defensiveRoles.map((role) => <Text key={role}>{role}</Text>)}
       </Paper>
-      <Button
-        disabled={isGenerating}
-        onClick={() => generate(defensiveInningInt)}
-      >
-        Regenerate defense starting at {inningFormat(defensiveInningDisplay)}{' '}
-        inning
-      </Button>
+      <Title order={3}>Edit Defense</Title>
+      <DefenseEditor />
+      {/* TODO: Button to add an inning */}
     </Stack>
   );
 }

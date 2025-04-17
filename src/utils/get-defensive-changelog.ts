@@ -1,5 +1,6 @@
 import type { DefensiveConfiguration, PositionId, State } from '../types';
 import { positionLabels } from '../constants';
+import { getPlayerName } from './state-selectors';
 
 function getPositionForPlayer(playerId: string, defense: DefensiveConfiguration): PositionId | null {
   const positions = Object.entries(defense.positions); 
@@ -23,7 +24,7 @@ export function getDefensiveChangelog(state: State, inning: number): string[] | 
   const priorInningDefense = state.game.defense[inning - 1];
 
   return state.game.availablePlayerIds.map((playerId) => {
-    const playerName = state.roster.find((player) => player.id === playerId)?.name;
+    const playerName = getPlayerName(state, playerId);
     const priorPosition = getPositionForPlayer(playerId, priorInningDefense);
     const currentPosition = getPositionForPlayer(playerId, defense);
 
